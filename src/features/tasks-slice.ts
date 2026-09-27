@@ -1,7 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { nanoid } from "nanoid"
 
 export type TaskState = {
     entities: Task[]
+}
+
+type DraftTask = Pick<Task, 'title'> & Partial<Task> // Make all properties of Task optional
+
+const createTask = (draftTask: DraftTask): Task => {
+    return {
+        ...draftTask,
+        id: nanoid()
+    }
 }
 
 const initialState: TaskState = {
@@ -12,8 +22,9 @@ const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        addTask: (state, action: PayloadAction<Task>) => {
-            state.entities.unshift(action.payload)
+        addTask: (state, action: PayloadAction<DraftTask>) => {
+            const task = createTask(action.payload)
+            state.entities.unshift(task)
         },
         removeTask: (state) => state
     }
