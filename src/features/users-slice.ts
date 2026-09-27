@@ -1,22 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
 
-export type UsersState = {
+import data from '../api/data.json'
+
+type UsersState = {
     entities: User[]
 }
 
-type DraftUser = RequireOnly<User, 'realName'>
+type DraftUser = RequireOnly<User, 'realName' | 'alterEgo'>
 
 const initialState: UsersState = {
-    entities: []
+    entities: data.users
 }
 
 const createUser = (draftUser: DraftUser): User => {
     return {
-        ...draftUser,
-        id: nanoid(),
+        id: nanoid(), // keeping id here guarantees there will be an id
         tasks: [],
-        alterEgo: ''
+        ...draftUser,
     }
 }
 
