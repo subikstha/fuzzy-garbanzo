@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { nanoid } from "nanoid"
 
+import data from '../api/data.json'
+
 export type TaskState = {
     entities: Task[]
 }
@@ -15,7 +17,7 @@ const createTask = (draftTask: DraftTask): Task => {
 }
 
 const initialState: TaskState = {
-    entities:[]
+    entities:data.tasks
 }
 
 const tasksSlice = createSlice({
