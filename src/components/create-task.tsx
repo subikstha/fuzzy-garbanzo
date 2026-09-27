@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 const CreateTask = () => {
   const [newTaskTitle, setnewTaskTitle] = useState('');
-
+  const dispatch = useDispatch();
   return (
     <form
       className="create-task"
