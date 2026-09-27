@@ -26,7 +26,12 @@ const tasksSlice = createSlice({
             const task = createTask(action.payload)
             state.entities.unshift(task)
         },
-        removeTask: (state) => state
+        removeTask: (state, action: PayloadAction<Task['id']>) => { // Here we could do <string>
+            //const task = state.entities.find(t => t.id === action.payload)
+            // state.entities.filter(s => s.id !== action.payload)
+            const taskIndex = state.entities.findIndex(task => task.id === action.payload)
+            state.entities.splice(taskIndex,1)
+        }
     }
 })
 
