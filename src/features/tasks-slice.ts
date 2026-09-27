@@ -5,7 +5,7 @@ export type TaskState = {
     entities: Task[]
 }
 
-type DraftTask = Pick<Task, 'title'> & Partial<Task> // Make all properties of Task optional
+type DraftTask = RequireOnly<Task, 'title'>// Make all properties of Task optional
 
 const createTask = (draftTask: DraftTask): Task => {
     return {
