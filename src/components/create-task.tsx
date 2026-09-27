@@ -1,14 +1,21 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { addTask } from '../features/tasks-slice';
+import { useAppDispatch } from '../hooks';
 
 const CreateTask = () => {
   const [newTaskTitle, setnewTaskTitle] = useState('');
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const dispatch = useAppDispatch()
   return (
     <form
       className="create-task"
       onSubmit={(e) => {
         e.preventDefault();
+        dispatch(addTask({
+          title: newTaskTitle
+        }))
+        // dispatch({type: 'whatever'})
       }}
     >
       <label htmlFor="new-task-title">
