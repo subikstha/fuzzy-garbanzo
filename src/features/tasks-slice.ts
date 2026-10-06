@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
 
-import data from '../api/data.json';
 import { removeUser } from './users-slice';
 
 export type TaskState = {
   entities: Task[];
+  loading?: boolean;
 };
 
 type DraftTask = RequireOnly<Task, 'title'>; // Make all properties of Task optional
@@ -18,8 +18,18 @@ export const createTask = (draftTask: DraftTask): Task => {
 };
 
 const initialState: TaskState = {
-  entities: data.tasks,
+  entities: [],
 };
+
+export const fetchTasks = createAsyncThunk(
+  'tasks/fetchTasks',
+  async (): Promise<Task[]> => {
+    const response = await fetch('/api/tasks').then((response) =>
+      response.json(),
+    );
+    return response.tasks;
+  },
+);
 
 const tasksSlice = createSlice({
   name: 'tasks',
@@ -47,6 +57,15 @@ const tasksSlice = createSlice({
           task.user = undefined;
         }
       }
+    });
+
+    builder.addCase(fetchTasks.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    builder.addCase(fetchTasks.fulfilled, (state, action) => {
+      state.entities = action.payload;
+      state.loading = false;
     });
   },
 });
